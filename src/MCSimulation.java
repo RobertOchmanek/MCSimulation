@@ -1,3 +1,4 @@
+import lattice.LatticeContainer;
 import main.Simulation;
 
 import java.util.LinkedList;
@@ -5,11 +6,7 @@ import java.util.List;
 
 public class MCSimulation implements Simulation {
 
-    //Current system state and parameters updated after each approved step
-    private int[][] lattice;
-    private double totalSystemEnergy;
-    private double totalSystemOrder;
-    private double neighboursOrder;
+    private LatticeContainer latticeContainer;
 
     //Parameters used in simulation
     private int numAngles;
@@ -21,20 +18,12 @@ public class MCSimulation implements Simulation {
     private ProbabilityFormula formula;
 
     public MCSimulation() {
-        this.totalSystemEnergy = 0;
-        this.totalSystemOrder = 0;
-        this.neighboursOrder = 0;
         this.influencePerLevel = new LinkedList<>();
     }
 
     @Override
     public void setLattice(int[][] lattice, int states) {
-
-        this.lattice = new int[lattice.length][];
-        for (int i = 0; i < lattice.length; ++i) {
-            this.lattice[i] = lattice[i].clone();
-        }
-
+        this.latticeContainer = new LatticeContainer(lattice);
         this.numAngles = states;
     }
 
@@ -76,28 +65,22 @@ public class MCSimulation implements Simulation {
 
             @Override
             public double totalEnergy() {
-                return totalSystemEnergy;
+                return latticeContainer.getTotalSystemEnergy();
             }
 
             @Override
             public double orderParameter() {
-                return totalSystemOrder;
+                return latticeContainer.getTotalSystemOrder();
             }
 
             @Override
             public double nearestNeighbourOrder() {
-                return neighboursOrder;
+                return latticeContainer.getNeighboursOrder();
             }
 
             @Override
             public int[][] lattice() {
-
-                int[][] latticeCopy = new int[lattice.length][];
-                for (int i = 0; i < lattice.length; ++i) {
-                    latticeCopy[i] = lattice[i].clone();
-                }
-
-                return latticeCopy;
+                return latticeContainer.copy();
             }
         };
     }
