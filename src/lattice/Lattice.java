@@ -1,6 +1,7 @@
 package lattice;
 
 import iterator.LatticeIterator;
+import iterator.NeighboursLevel;
 
 public interface Lattice {
 
@@ -8,5 +9,5 @@ public interface Lattice {
 
     int getMagnetAngle(int row, int col);
 
-    LatticeIterator getLevelIterator(int startingRow, int startingCol, int iteratedLevel);
+    LatticeIterator getLevelIterator(NeighboursLevel iteratedLevel, int startingRow, int startingCol);
 }

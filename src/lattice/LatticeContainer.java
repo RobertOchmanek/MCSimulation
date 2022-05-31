@@ -2,6 +2,7 @@ package lattice;
 
 import iterator.LatticeIterator;
 import iterator.NeighbourLevelIterator;
+import iterator.NeighboursLevel;
 
 public class LatticeContainer implements Lattice {
 
@@ -43,8 +44,8 @@ public class LatticeContainer implements Lattice {
     }
 
     @Override
-    public LatticeIterator getLevelIterator(int rootRow, int rootCol, int iteratedLevel) {
-        return new NeighbourLevelIterator(this, rootRow, rootCol, iteratedLevel);
+    public LatticeIterator getLevelIterator(NeighboursLevel iteratedLevel, int rootRow, int rootCol) {
+        return new NeighbourLevelIterator(this, iteratedLevel, rootRow, rootCol);
     }
 
     public double getTotalSystemEnergy() {

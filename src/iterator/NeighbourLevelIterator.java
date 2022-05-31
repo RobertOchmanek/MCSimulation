@@ -1,17 +1,21 @@
 package iterator;
 
+import iterator.calculator.ColumnCalculator;
+import iterator.calculator.RowCalculator;
 import lattice.LatticeContainer;
+
+import static iterator.NeighboursLevel.*;
 
 //Iterates clockwise through given neighbours level
 public class NeighbourLevelIterator implements LatticeIterator {
 
     private final LatticeContainer latticeContainer;
+    private final NeighboursLevel iteratedLevel;
     private final int rootRow;
     private final int rootCol;
-    private final int iteratedLevel;
     private int currentPosition;
 
-    public NeighbourLevelIterator(LatticeContainer latticeContainer, int rootRow, int rootCol, int iteratedLevel) {
+    public NeighbourLevelIterator(LatticeContainer latticeContainer, NeighboursLevel iteratedLevel, int rootRow, int rootCol) {
         this.latticeContainer = latticeContainer;
         this.rootRow = rootRow;
         this.rootCol = rootCol;
@@ -23,16 +27,16 @@ public class NeighbourLevelIterator implements LatticeIterator {
     //TODO: take lattice boundaries into account
     public int getNext() {
 
-        if (iteratedLevel == 1) {
-            return firstLevelClockwiseNext();
-        } else if (iteratedLevel == 2) {
-            return secondLevelClockwiseNext();
-        } else if (iteratedLevel == 3) {
-            return thirdLevelClockwiseNext();
-        } else if (iteratedLevel == 4) {
-            return fourthLevelClockwiseNext();
+        if (FIRST.equals(iteratedLevel)) {
+            return firstLevelNext();
+        } else if (SECOND.equals(iteratedLevel)) {
+            return secondLevelNext();
+        } else if (THIRD.equals(iteratedLevel)) {
+            return thirdLevelNext();
+        } else if (FOURTH.equals(iteratedLevel)) {
+            return fourthLevelNext();
         } else {
-            return fifthLevelClockwiseNext();
+            return fifthLevelNext();
         }
     }
 
@@ -43,49 +47,47 @@ public class NeighbourLevelIterator implements LatticeIterator {
 
     private int positionsOnLevel() {
 
-        if (iteratedLevel == 4) {
+        if (FOURTH.equals(iteratedLevel)) {
             return 8;
         }
         return 4;
     }
 
-    private int firstLevelClockwiseNext() {
+    private int calculateRow() {
+        return RowCalculator.calculateRow(iteratedLevel, latticeContainer.getSize(), currentPosition, rootRow);
+    }
+
+    private int calculateCol() {
+        return ColumnCalculator.calculateColumn(iteratedLevel, latticeContainer.getSize(), currentPosition, rootCol);
+    }
+
+    private int firstLevelNext() {
 
         int result;
 
         if (currentPosition == 0) {
-            result = latticeContainer.getMagnetAngle(rootRow - 1, rootCol);
+            result = latticeContainer.getMagnetAngle(calculateRow(), rootCol);
         } else if (currentPosition == 1) {
-            result = latticeContainer.getMagnetAngle(rootRow, rootCol + 1);
+            result = latticeContainer.getMagnetAngle(rootRow, calculateCol());
         } else if (currentPosition == 2) {
-            result = latticeContainer.getMagnetAngle(rootRow + 1, rootCol);
+            result = latticeContainer.getMagnetAngle(calculateRow(), rootCol);
         } else {
-            result = latticeContainer.getMagnetAngle(rootRow, rootCol - 1);
+            result = latticeContainer.getMagnetAngle(rootRow, calculateCol());
         }
 
         ++currentPosition;
         return result;
     }
 
-    private int secondLevelClockwiseNext() {
+    private int secondLevelNext() {
 
-        int result;
-
-        if (currentPosition == 0) {
-            result = latticeContainer.getMagnetAngle(rootRow - 1, rootCol - 1);
-        } else if (currentPosition == 1) {
-            result = latticeContainer.getMagnetAngle(rootRow - 1, rootCol + 1);
-        } else if (currentPosition == 2) {
-            result = latticeContainer.getMagnetAngle(rootRow + 1, rootCol + 1);
-        } else {
-            result = latticeContainer.getMagnetAngle(rootRow + 1, rootCol - 1);
-        }
+        int result = latticeContainer.getMagnetAngle(calculateRow(), calculateCol());
 
         ++currentPosition;
         return result;
     }
 
-    private int thirdLevelClockwiseNext() {
+    private int thirdLevelNext() {
 
         int result;
 
@@ -103,7 +105,7 @@ public class NeighbourLevelIterator implements LatticeIterator {
         return result;
     }
 
-    private int fourthLevelClockwiseNext() {
+    private int fourthLevelNext() {
 
         int result;
 
@@ -129,7 +131,7 @@ public class NeighbourLevelIterator implements LatticeIterator {
         return result;
     }
 
-    private int fifthLevelClockwiseNext() {
+    private int fifthLevelNext() {
 
         int result;
 
