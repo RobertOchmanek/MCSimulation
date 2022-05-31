@@ -43,16 +43,25 @@ public class IteratorTest {
         System.out.println();
         System.out.println("---------- Second level validation ----------");
         validateIterator(latticeSize, latticeContainer, SECOND);
+
+        System.out.println();
+        System.out.println("---------- Third level validation ----------");
+        validateIterator(latticeSize, latticeContainer, THIRD);
+
+        System.out.println();
+        System.out.println("---------- Fifth level validation ----------");
+        validateIterator(latticeSize, latticeContainer, FIFTH);
     }
 
-    private static void validateIterator(int latticeSize, LatticeContainer latticeContainer, NeighboursLevel second) {
-        List<LatticeIterator> secondLevelIterators = new LinkedList<>();
-        secondLevelIterators.add(latticeContainer.getLevelIterator(second, 0, 0));
-        secondLevelIterators.add(latticeContainer.getLevelIterator(second, 0, latticeSize - 1));
-        secondLevelIterators.add(latticeContainer.getLevelIterator(second, latticeSize - 1, latticeSize - 1));
-        secondLevelIterators.add(latticeContainer.getLevelIterator(second, latticeSize - 1, 0));
+    private static void validateIterator(int latticeSize, LatticeContainer latticeContainer, NeighboursLevel neighboursLevel) {
+        List<LatticeIterator> levelIterators = new LinkedList<>();
+        levelIterators.add(latticeContainer.getLevelIterator(neighboursLevel, 0, 0));
+        levelIterators.add(latticeContainer.getLevelIterator(neighboursLevel, 0, latticeSize - 1));
+        levelIterators.add(latticeContainer.getLevelIterator(neighboursLevel, latticeSize - 1, latticeSize - 1));
+        levelIterators.add(latticeContainer.getLevelIterator(neighboursLevel, latticeSize - 1, 0));
+        levelIterators.add(latticeContainer.getLevelIterator(neighboursLevel, 2, 2));
 
-        for (LatticeIterator iterator : secondLevelIterators) {
+        for (LatticeIterator iterator : levelIterators) {
             while (iterator.hasNext()) {
                 System.out.print(iterator.getNext() + " ");
             }

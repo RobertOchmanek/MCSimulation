@@ -24,19 +24,13 @@ public class NeighbourLevelIterator implements LatticeIterator {
     }
 
     @Override
-    //TODO: take lattice boundaries into account
+    //TODO: fourth level iterator
     public int getNext() {
 
-        if (FIRST.equals(iteratedLevel)) {
-            return firstLevelNext();
-        } else if (SECOND.equals(iteratedLevel)) {
-            return secondLevelNext();
-        } else if (THIRD.equals(iteratedLevel)) {
-            return thirdLevelNext();
-        } else if (FOURTH.equals(iteratedLevel)) {
-            return fourthLevelNext();
+        if (FIRST.equals(iteratedLevel) || THIRD.equals(iteratedLevel)) {
+            return firstAndThirdNext();
         } else {
-            return fifthLevelNext();
+            return secondFourthAndFifthNext();
         }
     }
 
@@ -61,7 +55,7 @@ public class NeighbourLevelIterator implements LatticeIterator {
         return ColumnCalculator.calculateColumn(iteratedLevel, latticeContainer.getSize(), currentPosition, rootCol);
     }
 
-    private int firstLevelNext() {
+    private int firstAndThirdNext() {
 
         int result;
 
@@ -79,71 +73,9 @@ public class NeighbourLevelIterator implements LatticeIterator {
         return result;
     }
 
-    private int secondLevelNext() {
+    private int secondFourthAndFifthNext() {
 
         int result = latticeContainer.getMagnetAngle(calculateRow(), calculateCol());
-
-        ++currentPosition;
-        return result;
-    }
-
-    private int thirdLevelNext() {
-
-        int result;
-
-        if (currentPosition == 0) {
-            result = latticeContainer.getMagnetAngle(rootRow - 2, rootCol);
-        } else if (currentPosition == 1) {
-            result = latticeContainer.getMagnetAngle(rootRow, rootCol + 2);
-        } else if (currentPosition == 2) {
-            result = latticeContainer.getMagnetAngle(rootRow + 2, rootCol);
-        } else {
-            result = latticeContainer.getMagnetAngle(rootRow, rootCol - 2);
-        }
-
-        ++currentPosition;
-        return result;
-    }
-
-    private int fourthLevelNext() {
-
-        int result;
-
-        if (currentPosition == 0) {
-            result = latticeContainer.getMagnetAngle(rootRow - 2, rootCol - 1);
-        } else if (currentPosition == 1) {
-            result = latticeContainer.getMagnetAngle(rootRow - 2, rootCol + 1);
-        } else if (currentPosition == 2) {
-            result = latticeContainer.getMagnetAngle(rootRow - 1, rootCol + 2);
-        } else if (currentPosition == 3) {
-            result = latticeContainer.getMagnetAngle(rootRow + 1, rootCol + 2);
-        } else if (currentPosition == 4) {
-            result = latticeContainer.getMagnetAngle(rootRow + 2, rootCol + 1);
-        } else if (currentPosition == 5) {
-            result = latticeContainer.getMagnetAngle(rootRow + 2, rootCol -1);
-        } else if (currentPosition == 6) {
-            result = latticeContainer.getMagnetAngle(rootRow + 1, rootCol - 2);
-        } else {
-            result = latticeContainer.getMagnetAngle(rootRow - 1, rootCol - 2);
-        }
-
-        ++currentPosition;
-        return result;
-    }
-
-    private int fifthLevelNext() {
-
-        int result;
-
-        if (currentPosition == 0) {
-            result = latticeContainer.getMagnetAngle(rootRow - 2, rootCol - 2);
-        } else if (currentPosition == 1) {
-            result = latticeContainer.getMagnetAngle(rootRow - 2, rootCol + 2);
-        } else if (currentPosition == 2) {
-            result = latticeContainer.getMagnetAngle(rootRow + 2, rootCol + 2);
-        } else {
-            result = latticeContainer.getMagnetAngle(rootRow + 2, rootCol - 2);
-        }
 
         ++currentPosition;
         return result;

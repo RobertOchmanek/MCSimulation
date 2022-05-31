@@ -4,6 +4,7 @@ import iterator.NeighboursLevel;
 
 import static iterator.NeighboursLevel.*;
 
+//TODO: simplify
 public class ColumnCalculator {
 
     public static int calculateColumn(NeighboursLevel iteratedLevel, int latticeSize, int currentPosition, int rootCol) {
@@ -26,8 +27,26 @@ public class ColumnCalculator {
             }
         }
 
+        if (THIRD.equals(iteratedLevel)) {
+            if (currentPosition == 1) {
+                return rootCol + 2 >= latticeSize ? (rootCol + 2) - latticeSize : rootCol + 2;
+            } else if (currentPosition == 3) {
+                return rootCol - 2 < 0 ? latticeSize + (rootCol - 2) : rootCol - 2;
+            } else {
+                return rootCol;
+            }
+        }
+
+        else if (FIFTH.equals(iteratedLevel)) {
+            if (currentPosition == 1 || currentPosition == 2) {
+                return rootCol + 2 >= latticeSize ? (rootCol + 2) - latticeSize : rootCol + 2;
+            } else {
+                return rootCol - 2 < 0 ? latticeSize + (rootCol - 2) : rootCol - 2;
+            }
+        }
+
         else {
-            return -1;
+            throw new IllegalStateException("Fourth level iterator not implemented.");
         }
     }
 }
