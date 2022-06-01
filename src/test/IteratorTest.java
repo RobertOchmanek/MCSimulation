@@ -49,6 +49,10 @@ public class IteratorTest {
         validateIterator(latticeSize, latticeContainer, THIRD);
 
         System.out.println();
+        System.out.println("---------- Fourth level validation ----------");
+        validateIterator(latticeSize, latticeContainer, FOURTH);
+
+        System.out.println();
         System.out.println("---------- Fifth level validation ----------");
         validateIterator(latticeSize, latticeContainer, FIFTH);
     }

@@ -10,9 +10,9 @@ public class RowCalculator {
 
         if (FIRST.equals(iteratedLevel) || THIRD.equals(iteratedLevel)) {
             if (currentPosition == 0) {
-                return getUpperRow(iteratedLevel, latticeSize, rootRow);
+                return getUpperRow(getDiff(iteratedLevel), latticeSize, rootRow);
             } else if (currentPosition == 2) {
-                return getLowerRow(iteratedLevel, latticeSize, rootRow);
+                return getLowerRow(getDiff(iteratedLevel), latticeSize, rootRow);
             } else {
                 return rootRow;
             }
@@ -20,24 +20,34 @@ public class RowCalculator {
 
         else if (SECOND.equals(iteratedLevel) || FIFTH.equals(iteratedLevel)) {
             if (currentPosition == 0 || currentPosition == 1) {
-                return getUpperRow(iteratedLevel, latticeSize, rootRow);
+                return getUpperRow(getDiff(iteratedLevel), latticeSize, rootRow);
             } else {
-                return getLowerRow(iteratedLevel, latticeSize, rootRow);
+                return getLowerRow(getDiff(iteratedLevel), latticeSize, rootRow);
             }
         }
 
         else {
-            throw new IllegalStateException("Fourth level iterator not implemented.");
+            if (currentPosition == 0 || currentPosition == 1) {
+                return getUpperRow(2, latticeSize, rootRow);
+            } else if (currentPosition == 2 || currentPosition == 7) {
+                return getUpperRow(1, latticeSize, rootRow);
+            } else if (currentPosition == 3 || currentPosition == 6) {
+                return getLowerRow(1, latticeSize, rootRow);
+            } else {
+                return getLowerRow(2, latticeSize, rootRow);
+            }
         }
     }
 
-    private static int getUpperRow(NeighboursLevel iteratedLevel, int latticeSize, int rootRow) {
-        int rowDiff = FIRST.equals(iteratedLevel) || SECOND.equals(iteratedLevel) ? 1 : 2;
+    private static int getUpperRow(int rowDiff, int latticeSize, int rootRow) {
         return rootRow - rowDiff < 0 ? latticeSize + (rootRow - rowDiff) : rootRow - rowDiff;
     }
 
-    private static int getLowerRow(NeighboursLevel iteratedLevel, int latticeSize, int rootRow) {
-        int rowDiff = FIRST.equals(iteratedLevel) || SECOND.equals(iteratedLevel) ? 1 : 2;
+    private static int getLowerRow(int rowDiff, int latticeSize, int rootRow) {
         return rootRow + rowDiff >= latticeSize ? (rootRow + rowDiff) - latticeSize : rootRow + rowDiff;
+    }
+
+    private static int getDiff(NeighboursLevel iteratedLevel) {
+        return FIRST.equals(iteratedLevel) || SECOND.equals(iteratedLevel) ? 1 : 2;
     }
 }

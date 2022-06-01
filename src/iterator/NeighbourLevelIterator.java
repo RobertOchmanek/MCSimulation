@@ -24,13 +24,12 @@ public class NeighbourLevelIterator implements LatticeIterator {
     }
 
     @Override
-    //TODO: fourth level iterator
     public int getNext() {
 
         if (FIRST.equals(iteratedLevel) || THIRD.equals(iteratedLevel)) {
-            return firstAndThirdNext();
+            return rowOrColNext();
         } else {
-            return secondFourthAndFifthNext();
+            return rowAndColNext();
         }
     }
 
@@ -55,7 +54,7 @@ public class NeighbourLevelIterator implements LatticeIterator {
         return ColumnCalculator.calculateColumn(iteratedLevel, latticeContainer.getSize(), currentPosition, rootCol);
     }
 
-    private int firstAndThirdNext() {
+    private int rowOrColNext() {
 
         int result;
 
@@ -73,7 +72,7 @@ public class NeighbourLevelIterator implements LatticeIterator {
         return result;
     }
 
-    private int secondFourthAndFifthNext() {
+    private int rowAndColNext() {
 
         int result = latticeContainer.getMagnetAngle(calculateRow(), calculateCol());
 
