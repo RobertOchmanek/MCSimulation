@@ -3,14 +3,15 @@ package lattice;
 import iterator.LatticeIterator;
 import iterator.NeighbourLevelIterator;
 import iterator.NeighboursLevel;
+import main.Simulation;
 
-public class LatticeContainer implements Lattice {
+public class LatticeContainer implements Lattice, Simulation.LatticeParameters {
 
     //Current system state and parameters updated after each approved step
-    private int[][] lattice;
-    private double totalSystemEnergy;
-    private double totalSystemOrder;
-    private double neighboursOrder;
+    private final int[][] lattice;
+    private final double totalSystemEnergy;
+    private final double totalSystemOrder;
+    private final double neighboursOrder;
 
     public LatticeContainer(int[][] lattice) {
         this.totalSystemEnergy = 0;
@@ -21,6 +22,13 @@ public class LatticeContainer implements Lattice {
         for (int i = 0; i < lattice.length; ++i) {
             this.lattice[i] = lattice[i].clone();
         }
+    }
+
+    public LatticeContainer(LatticeParametersBuilder builder) {
+        this.lattice = builder.getLattice();
+        this.neighboursOrder= builder.getNearestNeighbourOrder();
+        this.totalSystemOrder = builder.getOrderParameter();
+        this.totalSystemEnergy = builder.getTotalEnergy();
     }
 
     public int[][] copy() {
@@ -48,27 +56,23 @@ public class LatticeContainer implements Lattice {
         return new NeighbourLevelIterator(this, iteratedLevel, rootRow, rootCol);
     }
 
-    public double getTotalSystemEnergy() {
+    @Override
+    public double totalEnergy() {
         return totalSystemEnergy;
     }
 
-    public void setTotalSystemEnergy(double totalSystemEnergy) {
-        this.totalSystemEnergy = totalSystemEnergy;
-    }
-
-    public double getTotalSystemOrder() {
+    @Override
+    public double orderParameter() {
         return totalSystemOrder;
     }
 
-    public void setTotalSystemOrder(double totalSystemOrder) {
-        this.totalSystemOrder = totalSystemOrder;
-    }
-
-    public double getNeighboursOrder() {
+    @Override
+    public double nearestNeighbourOrder() {
         return neighboursOrder;
     }
 
-    public void setNeighboursOrder(double neighboursOrder) {
-        this.neighboursOrder = neighboursOrder;
+    @Override
+    public int[][] lattice() {
+        return copy();
     }
 }

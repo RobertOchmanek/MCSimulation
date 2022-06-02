@@ -1,4 +1,5 @@
 import lattice.LatticeContainer;
+import lattice.LatticeParametersBuilder;
 import main.Simulation;
 
 import java.util.LinkedList;
@@ -59,29 +60,11 @@ public class MCSimulation implements Simulation {
 
     @Override
     public LatticeParameters getState() {
-
-        //TODO: refactor this as a builder
-        return new LatticeParameters() {
-
-            @Override
-            public double totalEnergy() {
-                return latticeContainer.getTotalSystemEnergy();
-            }
-
-            @Override
-            public double orderParameter() {
-                return latticeContainer.getTotalSystemOrder();
-            }
-
-            @Override
-            public double nearestNeighbourOrder() {
-                return latticeContainer.getNeighboursOrder();
-            }
-
-            @Override
-            public int[][] lattice() {
-                return latticeContainer.copy();
-            }
-        };
+        return new LatticeParametersBuilder()
+                .setLattice(latticeContainer.copy())
+                .setOrderParameter(latticeContainer.orderParameter())
+                .setTotalEnergy(latticeContainer.totalEnergy())
+                .setNearestNeighbourOrder(latticeContainer.nearestNeighbourOrder())
+                .build();
     }
 }
