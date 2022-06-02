@@ -3,9 +3,8 @@ package lattice;
 import iterator.LatticeIterator;
 import iterator.NeighbourLevelIterator;
 import iterator.NeighboursLevel;
-import main.Simulation;
 
-public class LatticeContainer implements Lattice, Simulation.LatticeParameters {
+public class LatticeContainer implements Lattice {
 
     //Current system state and parameters updated after each approved step
     private final int[][] lattice;
@@ -49,22 +48,18 @@ public class LatticeContainer implements Lattice, Simulation.LatticeParameters {
         return new NeighbourLevelIterator(this, iteratedLevel, rootRow, rootCol);
     }
 
-    @Override
     public double totalEnergy() {
         return totalSystemEnergy;
     }
 
-    @Override
     public double orderParameter() {
         return totalSystemOrder;
     }
 
-    @Override
     public double nearestNeighbourOrder() {
         return neighboursOrder;
     }
 
-    @Override
     public int[][] lattice() {
         return copy();
     }
