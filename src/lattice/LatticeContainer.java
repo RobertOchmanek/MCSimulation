@@ -24,13 +24,6 @@ public class LatticeContainer implements Lattice, Simulation.LatticeParameters {
         }
     }
 
-    public LatticeContainer(LatticeParametersBuilder builder) {
-        this.lattice = builder.getLattice();
-        this.neighboursOrder= builder.getNearestNeighbourOrder();
-        this.totalSystemOrder = builder.getOrderParameter();
-        this.totalSystemEnergy = builder.getTotalEnergy();
-    }
-
     public int[][] copy() {
 
         int[][] latticeClone = new int[lattice.length][];

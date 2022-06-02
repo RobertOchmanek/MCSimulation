@@ -42,7 +42,7 @@ public class LatticeParametersBuilder {
         return lattice;
     }
 
-    public LatticeContainer build() {
-        return new LatticeContainer(this);
+    public LatticeParameters build() {
+        return new LatticeParameters(this);
     }
 }
