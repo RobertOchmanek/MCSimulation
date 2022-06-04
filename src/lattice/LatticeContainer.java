@@ -12,10 +12,17 @@ public class LatticeContainer implements Lattice {
     private final double totalSystemOrder;
     private final double neighboursOrder;
 
-    public LatticeContainer(int[][] lattice) {
+    private final int numAngles;
+
+    public int getNumAngles() {
+        return numAngles;
+    }
+
+    public LatticeContainer(int[][] lattice, int numAngles) {
         this.totalSystemEnergy = 0;
         this.totalSystemOrder = 0;
         this.neighboursOrder = 0;
+        this.numAngles = numAngles;
 
         this.lattice = new int[lattice.length][];
         for (int i = 0; i < lattice.length; ++i) {

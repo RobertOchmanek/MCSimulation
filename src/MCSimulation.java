@@ -10,7 +10,6 @@ public class MCSimulation implements Simulation {
     private LatticeContainer latticeContainer;
 
     //Parameters used in simulation
-    private int numAngles;
     private int neighbourLevels;
     private double TkB;
     private double externalFieldAngle;
@@ -24,8 +23,7 @@ public class MCSimulation implements Simulation {
 
     @Override
     public void setLattice(int[][] lattice, int states) {
-        this.latticeContainer = new LatticeContainer(lattice);
-        this.numAngles = states;
+        this.latticeContainer = new LatticeContainer(lattice, states);
     }
 
     @Override
