@@ -11,7 +11,6 @@ public class LatticeContainer implements Lattice {
     private final double totalSystemEnergy;
     private final double totalSystemOrder;
     private final double neighboursOrder;
-
     private final int numAngles;
 
     public int getNumAngles() {

@@ -6,14 +6,16 @@ import lattice.LatticeContainer;
 
 import java.util.List;
 
+import static formulas.AngleFormulas.discreteToRadians;
+
 public class EnergyFormulas {
 
-    public static double bigChangeDelta(int[][] afterChange, int[][] beforeChange) {
-        return totalSystemEnergy(afterChange) - totalSystemEnergy(beforeChange);
+    public static double bigChangeDelta(LatticeContainer afterChange, LatticeContainer beforeChange, List<Double> parameters, int numOfLevels, double externalFieldAngle) {
+        return totalSystemEnergy(afterChange, parameters, numOfLevels, externalFieldAngle) - totalSystemEnergy(beforeChange, parameters, numOfLevels, externalFieldAngle);
     }
 
-    public static double smallChangeDelta(int afterDirection, int beforeDirection) {
-        return magnetEnergy(afterDirection) - magnetEnergy(beforeDirection);
+    public static double smallChangeDelta(LatticeContainer afterChange, LatticeContainer beforeChange, List<Double> parameters, int numOfLevels, double externalFieldAngle, int row, int column) {
+        return magnetEnergy(afterChange, parameters, numOfLevels, externalFieldAngle, row, column) - magnetEnergy(beforeChange, parameters, numOfLevels, externalFieldAngle, row, column);
     }
 
     public static double totalSystemEnergy(LatticeContainer latticeContainer, List<Double> parameters, int numOfLevels, double externalFieldAngle) {
@@ -34,11 +36,11 @@ public class EnergyFormulas {
             LatticeIterator neighbourLevelIterator = latticeContainer.getLevelIterator(NeighboursLevel.values()[n], row, column);
             while (neighbourLevelIterator.hasNext()) {
                 int neighbourMagnetValue = neighbourLevelIterator.getNext();
-                energyOfOne = energyOfOne - (parameters.get(n + 1) * Math.cos(AngleFormulas.discreteToRadians(latticeContainer.getMagnetAngle(row, column), latticeContainer.getNumAngles()) - AngleFormulas.discreteToRadians(neighbourMagnetValue, latticeContainer.getNumAngles())));
+                energyOfOne = energyOfOne - (parameters.get(n + 1) * Math.cos(discreteToRadians(latticeContainer.getMagnetAngle(row, column), latticeContainer.getNumAngles()) - discreteToRadians(neighbourMagnetValue, latticeContainer.getNumAngles())));
             }
         }
         energyOfOne = energyOfOne * 0.5;
-        energyOfOne = energyOfOne - parameters.get(0) * Math.cos(AngleFormulas.discreteToRadians(latticeContainer.getMagnetAngle(row, column), latticeContainer.getNumAngles()) - externalFieldAngle);
+        energyOfOne = energyOfOne - parameters.get(0) * Math.cos(discreteToRadians(latticeContainer.getMagnetAngle(row, column), latticeContainer.getNumAngles()) - externalFieldAngle);
         return energyOfOne;
     }
 }

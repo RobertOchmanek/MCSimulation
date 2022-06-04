@@ -5,7 +5,7 @@ import static formulas.EnergyFormulas.totalSystemEnergy;
 //TODO: refactor this class as a decorator?
 public class TotalEnergyMetric {
 
-    private double energyChange;
+    /*private double energyChange;
 
     public TotalEnergyMetric(int[][] lattice) {
         this.energyChange = totalSystemEnergy(lattice);
@@ -17,5 +17,5 @@ public class TotalEnergyMetric {
 
     public double getEnergyChange() {
         return energyChange;
-    }
+    }*/
 }

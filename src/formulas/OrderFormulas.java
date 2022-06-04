@@ -1,50 +1,58 @@
 package formulas;
 
 import iterator.LatticeIterator;
-import iterator.NeighboursLevel;
 import lattice.LatticeContainer;
+
+import static formulas.AngleFormulas.discreteToRadians;
+import static iterator.NeighboursLevel.FIRST;
 
 public class OrderFormulas {
 
     public static double systemOrder(LatticeContainer latticeContainer) {
 
-        double xAvg = 0;
         int size = latticeContainer.getSize();
+        int numAngles = latticeContainer.getNumAngles();
+
+        double xAvg = 0;
         for (int row = 0; row < size; row++) {
-            for (int column = 0; column < size; column++) {
-                xAvg = xAvg + Math.cos(AngleFormulas.discreteToRadians(latticeContainer.getMagnetAngle(row, column), latticeContainer.getNumAngles()));
+            for (int col = 0; col < size; col++) {
+                xAvg += Math.cos(discreteToRadians(latticeContainer.getMagnetAngle(row, col), numAngles));
             }
         }
-
         xAvg = xAvg / (size * size);
-
 
         double yAvg = 0;
         for (int row = 0; row < size; row++) {
-            for (int column = 0; column < size; column++) {
-                yAvg = yAvg + Math.sin(AngleFormulas.discreteToRadians(latticeContainer.getMagnetAngle(row, column), latticeContainer.getNumAngles()));
+            for (int col = 0; col < size; col++) {
+                yAvg += Math.sin(discreteToRadians(latticeContainer.getMagnetAngle(row, col), numAngles));
             }
         }
         yAvg = yAvg / (size * size);
+
         return Math.sqrt(xAvg * xAvg + yAvg * yAvg);
     }
 
     public static double nearestNeighboursOrder(LatticeContainer latticeContainer) {
+
         int size = latticeContainer.getSize();
-        int amountOfNN = 4;
+        int numAngles = latticeContainer.getNumAngles();
+        int firstLevelNeighbours = 4;
         double totalScore = 0;
+
         for (int row = 0; row < size; row++) {
-            for (int column = 0; column < size; column++) {
-                double orderOfOne = 0;
-                LatticeIterator neighbourLevelIterator = latticeContainer.getLevelIterator(NeighboursLevel.FIRST, row, column);
+            for (int col = 0; col < size; col++) {
+
+                double currentOrder = 0;
+                LatticeIterator neighbourLevelIterator = latticeContainer.getLevelIterator(FIRST, row, col);
+
                 while (neighbourLevelIterator.hasNext()) {
-                    int neighbourMagnetValue = neighbourLevelIterator.getNext();
-                    orderOfOne = orderOfOne + Math.cos(AngleFormulas.discreteToRadians(latticeContainer.getMagnetAngle(row, column), latticeContainer.getNumAngles()) - AngleFormulas.discreteToRadians(neighbourMagnetValue, latticeContainer.getNumAngles()));
+                    currentOrder += Math.cos(discreteToRadians(latticeContainer.getMagnetAngle(row, col), numAngles) - discreteToRadians(neighbourLevelIterator.getNext(), numAngles));
                 }
-                totalScore = totalScore + orderOfOne;
+                totalScore += currentOrder;
             }
         }
-        totalScore = totalScore / (size * size * amountOfNN);
+
+        totalScore = totalScore / (size * size * firstLevelNeighbours);
         return totalScore;
     }
 }
