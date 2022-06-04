@@ -46,7 +46,7 @@ public class MCSimulationTest {
 
         //Perform given number of steps
         System.out.println();
-        int numSteps = 1000;
+        int numSteps = 50_000;
         simulation.executeMCSteps(numSteps);
 
         System.out.println("State of lattice after " + numSteps + " steps:");
@@ -63,5 +63,9 @@ public class MCSimulationTest {
         System.out.println("Neighbours order:");
         double afterNeighboursOrder = nearestNeighboursOrder(simulation.getLatticeContainer());
         System.out.println(afterNeighboursOrder);
+
+        System.out.println(simulation.getState().totalEnergy() / (32 * 32));
+        System.out.println(simulation.getState().orderParameter());
+        System.out.println(simulation.getState().nearestNeighbourOrder());
     }
 }

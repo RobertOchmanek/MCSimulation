@@ -8,10 +8,10 @@ public class LatticeContainer implements Lattice {
 
     //Current system state and parameters updated after each approved step
     private final int[][] lattice;
-    private final double totalSystemEnergy;
-    private final double totalSystemOrder;
-    private final double neighboursOrder;
     private final int numAngles;
+    private double totalSystemEnergy;
+    private double totalSystemOrder;
+    private double neighboursOrder;
 
     public int getNumAngles() {
         return numAngles;
@@ -52,6 +52,18 @@ public class LatticeContainer implements Lattice {
     @Override
     public LatticeIterator getLevelIterator(NeighboursLevel iteratedLevel, int rootRow, int rootCol) {
         return new NeighbourLevelIterator(this, iteratedLevel, rootRow, rootCol);
+    }
+
+    public void setTotalSystemEnergy(double totalSystemEnergy) {
+        this.totalSystemEnergy = totalSystemEnergy;
+    }
+
+    public void setTotalSystemOrder(double totalSystemOrder) {
+        this.totalSystemOrder = totalSystemOrder;
+    }
+
+    public void setNeighboursOrder(double neighboursOrder) {
+        this.neighboursOrder = neighboursOrder;
     }
 
     public double totalEnergy() {
