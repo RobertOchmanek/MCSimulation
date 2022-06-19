@@ -1,5 +1,6 @@
 package formulas;
 
+import simulation.SimulationParameters;
 import iterator.LatticeIterator;
 import lattice.LatticeContainer;
 
@@ -8,10 +9,10 @@ import static iterator.NeighboursLevel.FIRST;
 
 public class OrderFormulas {
 
-    public static double systemOrder(LatticeContainer latticeContainer) {
+    public static double systemOrder(LatticeContainer latticeContainer, SimulationParameters simulationParameters) {
 
         int size = latticeContainer.getSize();
-        int numAngles = latticeContainer.getNumAngles();
+        int numAngles = simulationParameters.getNumAngles();
 
         double xAvg = 0;
         for (int row = 0; row < size; row++) {
@@ -32,10 +33,10 @@ public class OrderFormulas {
         return Math.sqrt(xAvg * xAvg + yAvg * yAvg);
     }
 
-    public static double nearestNeighboursOrder(LatticeContainer latticeContainer) {
+    public static double nearestNeighboursOrder(LatticeContainer latticeContainer, SimulationParameters simulationParameters) {
 
         int size = latticeContainer.getSize();
-        int numAngles = latticeContainer.getNumAngles();
+        int numAngles = simulationParameters.getNumAngles();
         int firstLevelNeighbours = 4;
         double totalScore = 0;
 

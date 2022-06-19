@@ -1,10 +1,16 @@
 package lattice;
 
 public class LatticeParametersBuilder {
+
+    private int[][] lattice;
     private double totalEnergy;
     private double orderParameter;
     private double nearestNeighbourOrder;
-    private int[][] lattice;
+
+    public LatticeParametersBuilder setLattice(int[][] lattice) {
+        this.lattice = lattice;
+        return this;
+    }
 
     public LatticeParametersBuilder setTotalEnergy(double totalEnergy) {
         this.totalEnergy = totalEnergy;
@@ -21,9 +27,8 @@ public class LatticeParametersBuilder {
         return this;
     }
 
-    public LatticeParametersBuilder setLattice(int[][] lattice) {
-        this.lattice = lattice;
-        return this;
+    public int[][] getLattice() {
+        return lattice;
     }
 
     public double getTotalEnergy() {
@@ -36,10 +41,6 @@ public class LatticeParametersBuilder {
 
     public double getNearestNeighbourOrder() {
         return nearestNeighbourOrder;
-    }
-
-    public int[][] getLattice() {
-        return lattice;
     }
 
     public LatticeParameters build() {

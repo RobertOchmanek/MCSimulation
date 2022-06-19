@@ -1,5 +1,6 @@
 package test;
 
+import simulation.SimulationParameters;
 import lattice.LatticeContainer;
 
 import java.util.List;
@@ -65,19 +66,23 @@ public class FormulasTest {
 
     static void validateFormulas(int[][] lattice) {
 
-        LatticeContainer container = new LatticeContainer(lattice, 2);
+        LatticeContainer latticeContainer = new LatticeContainer(lattice);
+        SimulationParameters simulationParameters = new SimulationParameters(2);
+        simulationParameters.getInfluences().addAll(List.of(0.0, 1.0));
+        simulationParameters.setNeighbourLevels(1);
+        simulationParameters.setExternalFieldAngle(0.0);
         System.out.println();
 
         System.out.println("Total system energy:");
-        double totalEnergy = totalSystemEnergy(container, List.of(0.0, 1.0), 1, 0.0) / (4.0 * 4.0);
+        double totalEnergy = totalSystemEnergy(latticeContainer, simulationParameters) / (4.0 * 4.0);
         System.out.println(totalEnergy);
 
         System.out.println("Total system order:");
-        double totalOrder = systemOrder(container);
+        double totalOrder = systemOrder(latticeContainer, simulationParameters);
         System.out.println(totalOrder);
 
         System.out.println("Neighbours order:");
-        double neighboursOrder = nearestNeighboursOrder(container);
+        double neighboursOrder = nearestNeighboursOrder(latticeContainer, simulationParameters);
         System.out.println(neighboursOrder);
     }
 }

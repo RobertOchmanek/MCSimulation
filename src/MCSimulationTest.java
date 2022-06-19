@@ -1,11 +1,8 @@
 import main.Simulation;
+import main.Simulation.LatticeParameters;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static formulas.EnergyFormulas.totalSystemEnergy;
-import static formulas.OrderFormulas.nearestNeighboursOrder;
-import static formulas.OrderFormulas.systemOrder;
 
 public class MCSimulationTest {
 
@@ -22,9 +19,6 @@ public class MCSimulationTest {
             }
         }
 
-        System.out.println("Initial state of lattice with size " + size + ":");
-        System.out.println(Arrays.deepToString(lattice));;
-
         //Initialize container
         MCSimulation simulation = new MCSimulation();
         simulation.setLattice(lattice, 2);
@@ -32,17 +26,17 @@ public class MCSimulationTest {
         simulation.setProbabilityFormula(Simulation.ProbabilityFormula.METROPOLIS);
         simulation.setTkB(2.5);
 
+        System.out.println("Initial state of lattice with size " + size + ":");
+        LatticeParameters beforeState = simulation.getState();
+        System.out.println(Arrays.deepToString(beforeState.lattice()));
+
+        System.out.println("Parameters from state:");
         System.out.println("Total system energy:");
-        double totalEnergy = totalSystemEnergy(simulation.getLatticeContainer(), List.of(0.0, 1.0), 1, 0.0) / (32 * 32);
-        System.out.println(totalEnergy);
-
+        System.out.println(beforeState.totalEnergy() / (32 * 32));
         System.out.println("Total system order:");
-        double totalOrder = systemOrder(simulation.getLatticeContainer());
-        System.out.println(totalOrder);
-
+        System.out.println(beforeState.orderParameter());
         System.out.println("Neighbours order:");
-        double neighboursOrder = nearestNeighboursOrder(simulation.getLatticeContainer());
-        System.out.println(neighboursOrder);
+        System.out.println(beforeState.nearestNeighbourOrder());
 
         //Perform given number of steps
         System.out.println();
@@ -50,22 +44,15 @@ public class MCSimulationTest {
         simulation.executeMCSteps(numSteps);
 
         System.out.println("State of lattice after " + numSteps + " steps:");
-        System.out.println(Arrays.deepToString(simulation.getLatticeContainer().lattice()));
+        LatticeParameters afterState = simulation.getState();
+        System.out.println(Arrays.deepToString(afterState.lattice()));
 
+        System.out.println("Parameters from state:");
         System.out.println("Total system energy:");
-        double afterTotalEnergy = totalSystemEnergy(simulation.getLatticeContainer(), List.of(0.0, 1.0), 1, 0.0) / (32 * 32);
-        System.out.println(afterTotalEnergy);
-
+        System.out.println(afterState.totalEnergy() / (32 * 32));
         System.out.println("Total system order:");
-        double afterTotalOrder = systemOrder(simulation.getLatticeContainer());
-        System.out.println(afterTotalOrder);
-
+        System.out.println(afterState.orderParameter());
         System.out.println("Neighbours order:");
-        double afterNeighboursOrder = nearestNeighboursOrder(simulation.getLatticeContainer());
-        System.out.println(afterNeighboursOrder);
-
-        System.out.println(simulation.getState().totalEnergy() / (32 * 32));
-        System.out.println(simulation.getState().orderParameter());
-        System.out.println(simulation.getState().nearestNeighbourOrder());
+        System.out.println(afterState.nearestNeighbourOrder());
     }
 }

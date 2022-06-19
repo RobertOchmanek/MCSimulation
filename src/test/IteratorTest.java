@@ -34,7 +34,7 @@ public class IteratorTest {
             System.out.println();
         }
 
-        LatticeContainer latticeContainer = new LatticeContainer(lattice, 0);
+        LatticeContainer latticeContainer = new LatticeContainer(lattice);
 
         System.out.println();
         System.out.println("---------- First level validation ----------");
