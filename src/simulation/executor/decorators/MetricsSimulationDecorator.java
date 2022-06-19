@@ -1,21 +1,19 @@
-package simulation.executor;
+package simulation.executor.decorators;
 
-import lattice.LatticeContainer;
 import lattice.LatticeParameters;
-import simulation.SimulationParameters;
 import simulation.StepParameters;
+import simulation.executor.SimulationExecutor;
 
 import static formulas.EnergyFormulas.totalSystemEnergy;
 
-public class MetricsStepExecutor implements SimulationExecutor {
+public class MetricsSimulationDecorator extends SimulationDecorator {
 
-    private final SimulationExecutor wrappedExecutor;
     private double attemptedChanges = 0;
     private double acceptedChanges = 0;
     private double energyChange;
 
-    public MetricsStepExecutor(SimulationExecutor wrappedExecutor) {
-        this.wrappedExecutor = wrappedExecutor;
+    public MetricsSimulationDecorator(SimulationExecutor wrappedExecutor) {
+        super(wrappedExecutor);
     }
 
     @Override
@@ -25,7 +23,7 @@ public class MetricsStepExecutor implements SimulationExecutor {
             energyChange = totalSystemEnergy(getLatticeContainer(), getSimulationParameters());
         }
 
-        StepParameters stepParameters = wrappedExecutor.executeStep(stepNumber);
+        StepParameters stepParameters = super.executeStep(stepNumber);
 
         if (stepParameters.changeAccepted()) {
             ++acceptedChanges;
@@ -41,16 +39,6 @@ public class MetricsStepExecutor implements SimulationExecutor {
         System.out.println("Accepted changes frequency: " + acceptedChanges / attemptedChanges);
         System.out.println("Total system energy: " + (energyChange / (getLatticeContainer().getSize() * getLatticeContainer().getSize())));
 
-        return wrappedExecutor.executionSummary();
-    }
-
-    @Override
-    public SimulationParameters getSimulationParameters() {
-        return wrappedExecutor.getSimulationParameters();
-    }
-
-    @Override
-    public LatticeContainer getLatticeContainer() {
-        return wrappedExecutor.getLatticeContainer();
+        return super.executionSummary();
     }
 }

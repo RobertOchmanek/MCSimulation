@@ -1,4 +1,4 @@
-import simulation.executor.MetricsStepExecutor;
+import simulation.executor.decorators.MetricsSimulationDecorator;
 import simulation.executor.MonteCarloSimulationExecutor;
 import simulation.executor.SimulationExecutor;
 import simulation.SimulationParameters;
@@ -17,7 +17,7 @@ public class MCSimulation implements Simulation {
     @Override
     public void setLattice(int[][] lattice, int states) {
         simulationParameters = new SimulationParameters(states);
-        simulationExecutor = new MetricsStepExecutor(new MonteCarloSimulationExecutor(simulationParameters, new LatticeContainer(lattice)));
+        simulationExecutor = new MetricsSimulationDecorator(new MonteCarloSimulationExecutor(simulationParameters, new LatticeContainer(lattice)));
     }
 
     @Override
